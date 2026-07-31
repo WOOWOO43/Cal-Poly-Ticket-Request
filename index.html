@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cal Poly Football - Game Day Ticket Request</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <header class="bg-green-800 text-white shadow">
+    <div class="max-w-2xl mx-auto px-6 py-8 text-center">
+      <h1 class="text-3xl font-bold tracking-wide">Cal Poly Football</h1>
+      <p class="mt-2 text-green-100 text-lg">Unofficial Game Day Ticket Request Form</p>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-2xl mx-auto w-full px-6 py-10">
+    <div class="bg-white rounded-xl shadow-md border border-gray-200 p-8">
+      <p class="text-gray-600 mb-6">Please complete all required fields to request game day tickets.</p>
+
+      <form id="ticketForm" class="space-y-6">
+
+        <div>
+          <label class="block font-semibold text-gray-800 mb-1">Full Name (First, Last) <span class="text-red-600">*</span></label>
+          <input type="text" name="fullName" required class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-800 mb-1">School</label>
+          <input type="text" name="school" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-800 mb-2">Please select one game to attend <span class="text-red-600">*</span></label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer hover:bg-green-50">
+              <input type="radio" name="game" value="Vs. Central Washington 09/05" required class="accent-green-800">
+              <span>Vs. Central Washington 09/05</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer hover:bg-green-50">
+              <input type="radio" name="game" value="Vs. USD 09/19" class="accent-green-800">
+              <span>Vs. USD 09/19</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer hover:bg-green-50">
+              <input type="radio" name="game" value="Vs. Weber St. 10/03" class="accent-green-800">
+              <span>Vs. Weber St. 10/03</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer hover:bg-green-50">
+              <input type="radio" name="game" value="Vs. UT Tech 10/24" class="accent-green-800">
+              <span>Vs. UT Tech 10/24</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer hover:bg-green-50">
+              <input type="radio" name="game" value="Vs. NAU 11/17" class="accent-green-800">
+              <span>Vs. NAU 11/17</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-800 mb-1">Name of Guest 1</label>
+          <p class="text-sm text-gray-500 mb-1">Due to capacity, recruits are limited to two guests.</p>
+          <input type="text" name="guest1" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-800 mb-1">Name of Guest 2</label>
+          <input type="text" name="guest2" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-gray-800 mb-1">Class</label>
+            <input type="text" name="classYear" placeholder="e.g. 2027" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+          </div>
+          <div>
+            <label class="block font-semibold text-gray-800 mb-1">Position</label>
+            <input type="text" name="position" placeholder="e.g. LB, RB, WR, TE" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700">
+          </div>
+        </div>
+
+        <div id="statusMsg" class="hidden rounded-lg px-4 py-3 text-sm font-medium"></div>
+
+        <button type="submit" id="submitBtn" class="w-full bg-green-800 hover:bg-green-900 text-white font-semibold rounded-lg px-4 py-3 transition-colors">
+          Submit Request
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="text-center text-gray-500 text-sm py-6">
+    © 2026 Cal Poly Football Recruiting | Go Mustangs!
+  </footer>
+
+<script>
+  // Replace this with the Apps Script Web App deployment URL (Step: Deploy > Web App > copy URL)
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbx8n9JU1YDV1QTbAroq0JfPn9rZ9QFGlMY8EDoqVRzl6Dhs8PgQQTjs-aocvOPTiAi0Rw/exec";
+
+  const form = document.getElementById('ticketForm');
+  const statusMsg = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {
+      fullName: formData.get('fullName') || '',
+      school: formData.get('school') || '',
+      game: formData.get('game') || '',
+      guest1: formData.get('guest1') || '',
+      guest2: formData.get('guest2') || '',
+      classYear: formData.get('classYear') || '',
+      position: formData.get('position') || '',
+      submittedAt: new Date().toISOString()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+      await fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // no-cors mode means we can't read the response, so we assume success
+      statusMsg.textContent = "Thanks! Your ticket request has been submitted.";
+      statusMsg.className = "rounded-lg px-4 py-3 text-sm font-medium bg-green-100 text-green-800";
+      form.reset();
+    } catch (err) {
+      statusMsg.textContent = "Something went wrong submitting your request. Please try again.";
+      statusMsg.className = "rounded-lg px-4 py-3 text-sm font-medium bg-red-100 text-red-800";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Request';
+    }
+  });
+</script>
+
+</body>
+</html>
